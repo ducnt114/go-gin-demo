@@ -2,6 +2,7 @@ package conf
 
 import (
 	"github.com/joho/godotenv"
+	"go.uber.org/zap"
 
 	"os"
 	"strconv"
@@ -40,21 +41,20 @@ var EnvConfig *Config
 // init function
 func InitConfig() error {
 	EnvConfig = &Config{}
-	// log.Info("Environment: ", os.Getenv("ENVIRONMENT"))
-	if os.Getenv("ENVIRONMENT") == EnvironmentLocal {
+	EnvConfig.Environment = os.Getenv("ENVIRONMENT")
+	zap.S().Info("Environment: ", EnvConfig.Environment)
+	if EnvConfig.Environment == EnvironmentLocal {
 		err := godotenv.Load()
 		if err != nil {
-			// log.Error("Error loading .env file")
+			zap.S().Error("Error loading .env file")
 			return err
 		}
 	}
 
-	// log.Info("RunMode: ", EnvConfig.RunMode)
-
 	EnvConfig.MySQL.Host = os.Getenv("MYSQL_HOST")
 	mysqlPort, err := strconv.ParseInt(os.Getenv("MYSQL_PORT"), 10, 64)
 	if err != nil {
-		// log.Error("Error when parse config MYSQL_PORT, detail: ", err)
+		zap.S().Error("Error when parse config MYSQL_PORT, detail: ", err)
 		return err
 	}
 	EnvConfig.MySQL.Port = mysqlPort
@@ -65,14 +65,13 @@ func InitConfig() error {
 	EnvConfig.Server.BindingHost = os.Getenv("BINDING_HOST")
 	serverBindingPort, err := strconv.ParseInt(os.Getenv("BINDING_PORT"), 10, 64)
 	if err != nil {
-		// log.Error("Error when parse config BINDING_PORT, detail: ", err)
+		zap.S().Error("Error when parse config BINDING_PORT, detail: ", err)
 		return err
 	}
 	EnvConfig.Server.BindingPort = serverBindingPort
 
-	EnvConfig.Environment = os.Getenv("ENVIRONMENT")
-
 	EnvConfig.JWT.PublicKey = os.Getenv("JWT_PUBLIC_KEY")
+	EnvConfig.JWT.PrivateKey = os.Getenv("JWT_PRIVATE_KEY")
 
 	return nil
 }

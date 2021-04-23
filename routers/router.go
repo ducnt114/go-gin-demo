@@ -1,13 +1,17 @@
-package router
+package routers
 
 import (
 	"fmt"
 	"time"
 
+	"github.com/ducnt114/go-gin-demo/conf"
+	"github.com/ducnt114/go-gin-demo/controllers"
 	"github.com/ducnt114/go-gin-demo/repositories"
+	"github.com/ducnt114/go-gin-demo/services"
 	"github.com/gin-gonic/gin"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
-	"github.com/rs/zerolog/log"
+	"go.uber.org/zap"
 )
 
 func InitRouter() (*gin.Engine, error) {
@@ -16,23 +20,15 @@ func InitRouter() (*gin.Engine, error) {
 
 	serviceProvider, err := createServiceProvider()
 	if err != nil {
-		log.Error("Error when createServiceProvider, detail: ", err)
+		zap.S().Error("Error when createServiceProvider, detail: ", err)
 		return nil, err
 	}
 
-	categoryController := controllers.NewCategoryController(serviceProvider)
-	itemController := controllers.NewItemController(serviceProvider)
-	itemControllerV2 := controllers.NewItemControllerV2(serviceProvider)
-	defaultController := controllers.DefaultController{}
+	authController := controllers.NewAuthController(serviceProvider)
 
 	v1 := r.Group("/auth/v1")
-	{
-		defaultHandler := v1.Group("/health")
-		{
-			defaultHandler.GET("/", defaultController.Get)
-		}
 
-	}
+	v1.POST("/login", authController.Login)
 
 	return r, nil
 }

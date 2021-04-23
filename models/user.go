@@ -1,14 +1,14 @@
 package models
 
-import "time"
+import (
+	"github.com/jinzhu/gorm"
+)
 
 type User struct {
-	ID             int64     `gorm:"column:id;primary_key"`
-	CreatedAt      time.Time `gorm:"column:created_at"`
-	UpdatedAt      time.Time `gorm:"column:updated_at"`
-	Name           string    `gorm:"column:name"`
-	HashedPassword string    `gorm:"column:hashed_password"`
-	Salt           string    `gorm:"column:salt"`
+	gorm.Model
+	Name           string `gorm:"column:name"`
+	HashedPassword string `gorm:"column:hashed_password"`
+	Salt           string `gorm:"column:salt"`
 }
 
 func (User) TableName() string {

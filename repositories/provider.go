@@ -11,7 +11,7 @@ type repoProviderImpl struct {
 }
 
 func NewRepositoryProvider(db *gorm.DB) (RepositoryProvider, error) {
-	userRepo := NewUserRepository(db)
+	userRepo := newUserRepository(db)
 
 	return &repoProviderImpl{
 		userRepo: userRepo,
