@@ -23,3 +23,7 @@ type AuthClaims struct {
 	UserID   uint   `json:"user_id,omitempty"`
 	UserName string `json:"user_name,omitempty"`
 }
+
+type RefreshTokenReq struct {
+	RefreshToken string `json:"refresh_token"`
+}

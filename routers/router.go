@@ -30,6 +30,7 @@ func InitRouter() (*gin.Engine, error) {
 	v1 := r.Group("/auth/v1")
 
 	v1.POST("/login", authController.Login)
+	v1.POST("/refresh-token", authController.RefreshToken)
 
 	return r, nil
 }

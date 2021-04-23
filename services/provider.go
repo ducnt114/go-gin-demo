@@ -14,7 +14,9 @@ type serviceProviderImpl struct {
 }
 
 func NewServiceProvider(repoProvider repositories.RepositoryProvider, jwtHelper utils.JWTHelper) ServiceProvider {
-	authService := newAuthService(repoProvider.GetUserRepo(), jwtHelper)
+	authService := newAuthService(repoProvider.GetUserRepo(),
+		repoProvider.GetTokenRepo(),
+		jwtHelper)
 
 	return &serviceProviderImpl{
 		authService: authService,
