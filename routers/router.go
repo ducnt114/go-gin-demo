@@ -8,6 +8,7 @@ import (
 	"github.com/ducnt114/go-gin-demo/controllers"
 	"github.com/ducnt114/go-gin-demo/repositories"
 	"github.com/ducnt114/go-gin-demo/services"
+	"github.com/ducnt114/go-gin-demo/utils"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
@@ -51,7 +52,13 @@ func createServiceProvider() (services.ServiceProvider, error) {
 	if err != nil {
 		return nil, err
 	}
-	serviceProvider := services.NewServiceProvider(repoProvider)
+
+	jwtHelper, err := utils.NewJWTHelper(conf.EnvConfig.JWT.PublicKey, conf.EnvConfig.JWT.PrivateKey)
+	if err != nil {
+		return nil, err
+	}
+
+	serviceProvider := services.NewServiceProvider(repoProvider, jwtHelper)
 
 	return serviceProvider, nil
 }
