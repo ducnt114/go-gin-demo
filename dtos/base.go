@@ -7,6 +7,10 @@ type Meta struct {
 	Message string `json:"message"`
 }
 
+type BaseResponse struct {
+	Meta *Meta `json:"meta"`
+}
+
 var (
 	SuccessMeta = &Meta{
 		Code:    http.StatusOK,

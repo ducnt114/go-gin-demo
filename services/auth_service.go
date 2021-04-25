@@ -171,6 +171,5 @@ func (s *authServiceImpl) genNewAccessToken(user *models.User) (string, error) {
 }
 
 func (s *authServiceImpl) genNewRefreshToken(user *models.User) string {
-	// TODO need improve: check duplicate in db
 	return utils.RandomRefreshToken()
 }
